@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Project;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreProjectRequest extends FormRequest
@@ -13,7 +14,7 @@ class StoreProjectRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +24,11 @@ class StoreProjectRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            //
-        ];
+        // return [
+        //     'title' => 'unique:projects|required|max:255',
+        //     'description' => 'string',
+        //     'url' => 'max:255|url',
+        //     'customer' => 'required|max:255',
+        // ];
     }
 }

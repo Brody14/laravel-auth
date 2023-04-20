@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
@@ -36,9 +38,25 @@ class ProjectController extends Controller
      * @param  \App\Http\Requests\StoreProjectRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreProjectRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'unique:projects|required|max:255',
+            'description' => 'nullable|string',
+            'url' => 'nullable|max:255|url',
+            'customer' => 'required|max:255',
+        ]);
+
+        $new_project = new Project();
+        $new_project->title = $validated['title'];
+        $new_project->slug = Str::slug($new_project->title, '-');
+        $new_project->customer = $validated['customer'];
+        $new_project->description = $validated['description'];
+        $new_project->url = $validated['url'];
+        $new_project->save();
+
+        //$new_project = Project::create($validated);
+        return to_route('projects.show', $new_project);
     }
 
     /**
@@ -70,9 +88,18 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProjectRequest $request, Project $project)
+    public function update(Request $request, Project $project)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'nullable|string',
+            'url' => 'nullable|max:255|url',
+            'customer' => 'required|max:255',
+        ]);
+
+        $project->update($validated);
+
+        return to_route('projects.show', $project);
     }
 
     /**
