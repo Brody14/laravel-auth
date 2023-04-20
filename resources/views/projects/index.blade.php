@@ -26,7 +26,7 @@
                         <a href="{{ route('projects.show',$project) }}">{{ $project->title }}</a>
                     </td>
                     <td>{{ $project->description }}</td>
-                    <td> <a href="{{ $project->url }}">Visita</a></td>
+                    <td> <a href="{{ $project->url }}">Visit</a></td>
                     <td>
                       <div class="text-center d-flex gap-2 align-items-center">
                         <a href="{{ route('projects.edit',$project) }}"><i class="fa-solid fa-pencil"></i></a>
