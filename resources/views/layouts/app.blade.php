@@ -17,6 +17,9 @@
 
     <!-- Usando Vite -->
     @vite(['resources/js/app.js'])
+
+    <script src="https://kit.fontawesome.com/d3a966ac98.js" crossorigin="anonymous"></script>
+
 </head>
 
 <body>
@@ -46,6 +49,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{url('/') }}">{{ __('Home') }}</a>
                         </li>
+                        @auth
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('projects.index') }}">{{ __('Projects') }}</a>
+                        </li>
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
