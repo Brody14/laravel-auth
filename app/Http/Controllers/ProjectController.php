@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class ProjectController extends Controller
@@ -17,7 +16,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::all();
+        $projects = Project::withTrashed()->get();
 
         return view('projects.index', compact('projects'));
     }
@@ -91,6 +90,15 @@ class ProjectController extends Controller
         return to_route('projects.show', $project);
     }
 
+    public function restore(Project $project)
+    {
+        if ($project->trashed()) {
+            $project->restore();
+        }
+
+        return back();
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -99,7 +107,12 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        $project->delete();
+        if ($project->trashed()) {
+            $project->forceDelete();
+        } else {
+
+            $project->delete();
+        }
 
         return to_route('projects.index');
     }

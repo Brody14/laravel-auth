@@ -4,8 +4,8 @@
     
     <div class="container py-5 text-center">
         <h1>All Projects</h1>
-        <div class="py-2">
-          <a href="{{ route('projects.create')}}"><i class="project_add fa-regular fa-square-plus"></i></a>
+        <div class="d-flex justify-content-end py-2">
+          <a class="btn btn-outline-success" href="{{ route('projects.create')}}"> Aggiungi Progetto </i></a>
         </div>
     </div>
 
@@ -16,6 +16,7 @@
                 <th scope="col">Title</th>
                 <th scope="col">Description</th>
                 <th scope="col">Url</th>
+                <th scope="col">Deleted</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
@@ -27,6 +28,7 @@
                     </td>
                     <td>{{ $project->description }}</td>
                     <td> <a href="{{ $project->url }}">Visit</a></td>
+                    <td> {{ $project->trashed() ? $project->deleted_at->format('d/m/Y') : ''}}</td>
                     <td>
                       <div class="text-center d-flex gap-2 align-items-center">
                         <a href="{{ route('projects.edit',$project) }}"><i class="fa-solid fa-pencil"></i></a>
@@ -34,9 +36,17 @@
                           @csrf
                           @method('DELETE')
                           <button type="submit" class="border-0 bg-transparent">
-                            <i class="fa-regular fa-trash-can"></i>
+                            <i class="text-danger fa-regular fa-trash-can"></i>
                           </button>
                         </form>
+                        @if ($project->trashed())
+                        <form action="{{route('projects.restore', $project)}}" method="POST">
+                          @csrf
+                          <button type="submit" class="border-0 bg-transparent">
+                            <i class="text-success fa-solid fa-trash-arrow-up"></i>
+                          </button>
+                        </form>
+                        @endif
                       </div>
                     </td>
                   </tr>
