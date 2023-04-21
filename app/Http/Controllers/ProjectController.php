@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class ProjectController extends Controller
@@ -14,11 +15,22 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $projects = Project::withTrashed()->get();
 
-        return view('projects.index', compact('projects'));
+        //creazione vista cestino
+        $trashed = $request->input('trashed');
+
+        if ($trashed) {
+            $projects = Project::onlyTrashed()->get();
+        } else {
+            $projects = Project::all();
+        }
+
+        //numero elementi nel cestino
+        $in_trash = Project::onlyTrashed()->count();
+
+        return view('projects.index', compact('projects', 'in_trash'));
     }
 
     /**

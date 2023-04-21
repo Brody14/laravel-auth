@@ -3,8 +3,13 @@
 @section('content')
     
     <div class="container py-5 text-center">
-        <h1>All Projects</h1>
-        <div class="d-flex justify-content-end py-2">
+        <h1>{{request('trashed') ? 'Trash' : 'All Projects'}}</h1>
+        <div class="d-flex justify-content-end py-2 gap-3">
+          @if (request('trashed'))
+            <a class="btn btn-outline-dark" href="{{ route('projects.index')}}"> All Projects </i></a>    
+          @else
+            <a class="btn btn-outline-dark" href="{{ route('projects.index', ['trashed' => true])}}"> Trash ({{$in_trash}}) </i></a>    
+          @endif
           <a class="btn btn-outline-success" href="{{ route('projects.create')}}"> Aggiungi Progetto </i></a>
         </div>
     </div>
