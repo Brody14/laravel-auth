@@ -94,6 +94,7 @@
         </nav>
 
         <main class="">
+            @include('flash-message')
             @yield('content')
         </main>
     </div>

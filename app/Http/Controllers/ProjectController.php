@@ -55,9 +55,8 @@ class ProjectController extends Controller
 
         $validated['slug'] = Str::slug($validated['title']);
 
-
         $new_project = Project::create($validated);
-        return to_route('projects.show', $new_project);
+        return to_route('projects.show', $new_project)->with('success', 'Project created successfully');
     }
 
     /**
@@ -99,7 +98,7 @@ class ProjectController extends Controller
 
         $project->update($validated);
 
-        return to_route('projects.show', $project);
+        return to_route('projects.show', $project)->with('update', 'Project updated');
     }
 
     public function restore(Project $project)
@@ -108,7 +107,7 @@ class ProjectController extends Controller
             $project->restore();
         }
 
-        return back();
+        return back()->with('success', 'Project restored successfully');
     }
 
     /**
@@ -121,10 +120,10 @@ class ProjectController extends Controller
     {
         if ($project->trashed()) {
             $project->forceDelete();
-            return to_route('projects.index');
+            return to_route('projects.index')->with('message', 'Project deleted');
         }
 
         $project->delete();
-        return back();
+        return back()->with('moved', 'Project moved to trash');
     }
 }
