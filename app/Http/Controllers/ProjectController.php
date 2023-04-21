@@ -109,11 +109,10 @@ class ProjectController extends Controller
     {
         if ($project->trashed()) {
             $project->forceDelete();
-        } else {
-
-            $project->delete();
+            return to_route('projects.index');
         }
 
-        return to_route('projects.index');
+        $project->delete();
+        return back();
     }
 }
