@@ -24,11 +24,11 @@ class StoreProjectRequest extends FormRequest
      */
     public function rules()
     {
-        // return [
-        //     'title' => 'unique:projects|required|max:255',
-        //     'description' => 'string',
-        //     'url' => 'max:255|url',
-        //     'customer' => 'required|max:255',
-        // ];
+        return [
+            'title' => 'unique:projects|required|max:255',
+            'description' => 'nullable|string',
+            'url' => 'nullable|max:255|url',
+            'customer' => 'required|max:255'
+        ];
     }
 }
